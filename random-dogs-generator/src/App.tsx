@@ -106,7 +106,7 @@ function App() {
                 loading="lazy"
                 src={imgLink}
                 key={i}
-                className="max-w-[20rem]"
+                className="max-w-[30rem]"
                 alt="dog"
               />
             ))}
@@ -140,17 +140,7 @@ function App() {
               Fetch!
             </button>
           </div>
-          <div className=" min-h-[85vh] flex flex-col justify-center items-center">
-            {/* {_ALL_IMAGE[imageIndex].map((imgLink, i) => (
-              <img
-                loading="lazy"
-                src={imgLink}
-                key={i}
-                className="max-w-[40rem]"
-                alt="dog"
-              />
-            ))} */}
-          </div>
+          <div className=" min-h-[85vh] flex flex-col justify-center items-center"></div>
         </section>
       </div>
     );
