@@ -40,6 +40,7 @@ function App() {
           singleImgaeLink.push([linkString]);
         });
         set_ALL_IMAGE(singleImgaeLink);
+        setImageIndex(0);
       }
     })();
   }, [dogFullName]);
@@ -55,6 +56,7 @@ function App() {
           singleImgaeLink.push([linkString]);
         });
         set_ALL_IMAGE(singleImgaeLink);
+        setImageIndex(0);
       }
     })();
   }, [subBreed]);
@@ -72,6 +74,7 @@ function App() {
         } else _ALL_BREEDS.push(breed);
       });
       setBreeds(_ALL_BREEDS);
+      setImageIndex(0);
     })();
   }, []);
   if (_ALL_IMAGE[imageIndex] !== undefined) {
