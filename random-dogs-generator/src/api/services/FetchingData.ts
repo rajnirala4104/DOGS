@@ -7,9 +7,9 @@ export const getDogBreeds = ()=>{
 }
 
 export const getDogImageByBreedName = (breedName:string)=>{
-    return http.get(`/breed/${breedName}/images`)
+    return http.get(`/breed/${breedName}/images/random`)
 }
 
 export const getSubBreedImageBreed = (breedName:string, subBreed:string) => {
-    return http.get(`/breed/${breedName}/${subBreed}/images`)
+    return http.get(`/breed/${breedName}/${subBreed}/images/random`)
 }   
