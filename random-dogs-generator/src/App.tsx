@@ -13,6 +13,8 @@ function App() {
   const [dogFullName, setDogFullName] = useState<string[]>([]);
   const [_ALL_IMAGE, set_ALL_IMAGE] = useState<string[]>([]);
 
+  console.log(onlyBreed, subBreed);
+  console.log(_ALL_IMAGE);
   const divideTheNameAndSet = (dogFullName: string) => {
     const dividedNames = dogFullName.split(" ");
     if (dividedNames.length === 2) {
@@ -34,7 +36,7 @@ function App() {
         set_ALL_IMAGE(response.data.message);
       }
     })();
-  }, [onlyBreed]);
+  }, [dogFullName]);
 
   useEffect(() => {
     (async () => {
@@ -65,14 +67,15 @@ function App() {
 
   return (
     <div className="App min-h-[100vh]">
-      <section className="containe border-2 bg-gray-200 flex flex-col my-auto">
+      <section className="containe border-2 top-0 bg-gray-200 flex flex-col my-auto">
         <h2>BREEDS LIST</h2>
-        <div className="flex justify-center items-center flex-col space-y-3 lg:flex-row bg-white py-2">
+        <div className="flex sticky top-0 justify-center items-center flex-col space-y-3 lg:flex-row bg-white py-2">
           <p>https://dog.ceo/api/breed/</p>
           <select
             className="py-2 px-4 mx-2 rounded"
             onChange={(e) => divideTheNameAndSet(e.target.value)}
           >
+            <option value="">-- select --</option>
             {breeds.map((breed, i) => (
               <option key={i} value={breed}>
                 {breed}
@@ -84,7 +87,13 @@ function App() {
         </div>
         <div className=" min-h-[20rem] flex flex-col justify-center items-center">
           {_ALL_IMAGE.map((imgLink, i) => (
-            <img src={imgLink} key={i} className="" alt="dog" />
+            <img
+              loading="lazy"
+              src={imgLink}
+              key={i}
+              className="max-w-[30rem]"
+              alt="dog"
+            />
           ))}
         </div>
       </section>
