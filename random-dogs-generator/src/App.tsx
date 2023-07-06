@@ -13,8 +13,6 @@ function App() {
   const [dogFullName, setDogFullName] = useState<string[]>([]);
   const [_ALL_IMAGE, set_ALL_IMAGE] = useState<string[]>([]);
 
-  console.log(onlyBreed, subBreed);
-  console.log(_ALL_IMAGE);
   const divideTheNameAndSet = (dogFullName: string) => {
     const dividedNames = dogFullName.split(" ");
     if (dividedNames.length === 2) {
@@ -83,7 +81,12 @@ function App() {
             ))}
           </select>
           <p>/images/random</p>
-          <button className="bg-blue-400 px-4 py-2 rounded-lg">Fetch!</button>
+          <button
+            onClick={() => divideTheNameAndSet(onlyBreed)}
+            className="bg-blue-400 px-4 hover:bg-blue-500 py-2 rounded-lg"
+          >
+            Fetch!
+          </button>
         </div>
         <div className=" min-h-[20rem] flex flex-col justify-center items-center">
           {_ALL_IMAGE.map((imgLink, i) => (
