@@ -14,6 +14,7 @@ function App() {
   const [_ALL_IMAGE, set_ALL_IMAGE] = useState<string[][]>([]);
   const [imageIndex, setImageIndex] = useState<number>(0);
 
+  // ---- seperate the dog breed and sub-breed
   const divideTheNameAndSet = (dogFullName: string) => {
     const dividedNames = dogFullName.split(" ");
     if (dividedNames.length === 2) {
@@ -26,16 +27,14 @@ function App() {
     }
   };
 
+  // ------ fetching data by using breed name
   useEffect(() => {
     (async () => {
       if (onlyBreed === "") {
         console.log("Oops!! we didn't get any breed name");
       } else {
         const response = await getDogImageByBreedName(onlyBreed);
-        // set_ALL_IMAGE(response.data.message);
         const singleImgaeLink: string[][] = [];
-
-        // console.log(response.data.message);
         response.data.message.forEach((linkString: string) => {
           singleImgaeLink.push([linkString]);
         });
@@ -45,6 +44,7 @@ function App() {
     })();
   }, [dogFullName]);
 
+  // ------ Fetching data by using breed and sub-breed
   useEffect(() => {
     (async () => {
       if (subBreed === "") {
@@ -61,6 +61,7 @@ function App() {
     })();
   }, [subBreed]);
 
+  // ------ For Dog's Breed for dropdown
   useEffect(() => {
     (async () => {
       const response = await getDogBreeds();
@@ -77,6 +78,7 @@ function App() {
       setImageIndex(0);
     })();
   }, []);
+
   if (_ALL_IMAGE[imageIndex] !== undefined) {
     return (
       <div className="App min-h-[100vh]">
