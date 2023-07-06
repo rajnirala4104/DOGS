@@ -11,7 +11,8 @@ function App() {
   const [onlyBreed, setOnlyBreed] = useState<string>("");
   const [subBreed, setSubBreed] = useState<string>("");
   const [dogFullName, setDogFullName] = useState<string[]>([]);
-  const [_ALL_IMAGE, set_ALL_IMAGE] = useState<string[]>([]);
+  const [_ALL_IMAGE, set_ALL_IMAGE] = useState<string[][]>([]);
+  const [imageIndex, setImageIndex] = useState<number>(0);
 
   const divideTheNameAndSet = (dogFullName: string) => {
     const dividedNames = dogFullName.split(" ");
@@ -31,7 +32,14 @@ function App() {
         console.log("Oops!! we didn't get any breed name");
       } else {
         const response = await getDogImageByBreedName(onlyBreed);
-        set_ALL_IMAGE(response.data.message);
+        // set_ALL_IMAGE(response.data.message);
+        const singleImgaeLink: string[][] = [];
+
+        // console.log(response.data.message);
+        response.data.message.forEach((linkString: string) => {
+          singleImgaeLink.push([linkString]);
+        });
+        set_ALL_IMAGE(singleImgaeLink);
       }
     })();
   }, [dogFullName]);
@@ -42,7 +50,11 @@ function App() {
         console.log("Oops!! we didn't get any breed and sub breed name ");
       } else {
         const response = await getSubBreedImageBreed(onlyBreed, subBreed);
-        set_ALL_IMAGE(response.data.message);
+        const singleImgaeLink: string[][] = [];
+        response.data.message.forEach((linkString: string) => {
+          singleImgaeLink.push([linkString]);
+        });
+        set_ALL_IMAGE(singleImgaeLink);
       }
     })();
   }, [subBreed]);
@@ -62,46 +74,87 @@ function App() {
       setBreeds(_ALL_BREEDS);
     })();
   }, []);
-
-  return (
-    <div className="App min-h-[100vh]">
-      <section className="containe border-2 top-0 bg-gray-200 flex flex-col my-auto">
-        <h2>BREEDS LIST</h2>
-        <div className="flex sticky top-0 justify-center items-center flex-col space-y-3 lg:flex-row bg-white py-2">
-          <p>https://dog.ceo/api/breed/</p>
-          <select
-            className="py-2 px-4 mx-2 rounded"
-            onChange={(e) => divideTheNameAndSet(e.target.value)}
-          >
-            <option value="">-- select --</option>
-            {breeds.map((breed, i) => (
-              <option key={i} value={breed}>
-                {breed}
-              </option>
+  if (_ALL_IMAGE[imageIndex] !== undefined) {
+    return (
+      <div className="App min-h-[100vh]">
+        <section className="containe border-2 top-0 bg-gray-200  items-center flex flex-col my-auto">
+          <h2 className="text-4xl my-4">BREEDS LIST</h2>
+          <div className="flex sticky top-0 justify-center items-center px-4 max-w-[60%] rounded-lg shadow-lg flex-col space-y-3 lg:flex-row bg-white py-2">
+            <p>https://dog.ceo/api/breed/</p>
+            <select
+              className="py-2 px-4 mx-2 rounded"
+              onChange={(e) => divideTheNameAndSet(e.target.value)}
+            >
+              <option value="">-- select --</option>
+              {breeds.map((breed, i) => (
+                <option key={i} value={breed}>
+                  {breed}
+                </option>
+              ))}
+            </select>
+            <p>/images/random</p>
+            <button
+              onClick={() => setImageIndex(imageIndex + 1)}
+              className="bg-blue-400 px-4 hover:bg-blue-500 py-2 rounded-lg"
+            >
+              Fetch!
+            </button>
+          </div>
+          <div className=" min-h-[85vh] flex flex-col justify-center items-center">
+            {_ALL_IMAGE[imageIndex].map((imgLink, i) => (
+              <img
+                loading="lazy"
+                src={imgLink}
+                key={i}
+                className="max-w-[20rem]"
+                alt="dog"
+              />
             ))}
-          </select>
-          <p>/images/random</p>
-          <button
-            onClick={() => divideTheNameAndSet(onlyBreed)}
-            className="bg-blue-400 px-4 hover:bg-blue-500 py-2 rounded-lg"
-          >
-            Fetch!
-          </button>
-        </div>
-        <div className=" min-h-[20rem] flex flex-col justify-center items-center">
-          {_ALL_IMAGE.map((imgLink, i) => (
-            <img
-              loading="lazy"
-              src={imgLink}
-              key={i}
-              className="max-w-[30rem]"
-              alt="dog"
-            />
-          ))}
-        </div>
-      </section>
-    </div>
-  );
+          </div>
+        </section>
+      </div>
+    );
+  } else {
+    return (
+      <div className="App min-h-[100vh]">
+        <section className="containe border-2 top-0 bg-gray-200  items-center flex flex-col my-auto">
+          <h2 className="text-4xl my-4">BREEDS LIST</h2>
+          <div className="flex sticky top-0 justify-center items-center px-4 max-w-[60%] rounded-lg shadow-lg flex-col space-y-3 lg:flex-row bg-white py-2">
+            <p>https://dog.ceo/api/breed/</p>
+            <select
+              className="py-2 px-4 mx-2 rounded"
+              onChange={(e) => divideTheNameAndSet(e.target.value)}
+            >
+              <option value="">-- select --</option>
+              {breeds.map((breed, i) => (
+                <option key={i} value={breed}>
+                  {breed}
+                </option>
+              ))}
+            </select>
+            <p>/images/random</p>
+            <button
+              onClick={() => setImageIndex(imageIndex + 1)}
+              className="bg-blue-400 px-4 hover:bg-blue-500 py-2 rounded-lg"
+            >
+              Fetch!
+            </button>
+          </div>
+          <div className=" min-h-[85vh] flex flex-col justify-center items-center">
+            {/* {_ALL_IMAGE[imageIndex].map((imgLink, i) => (
+              <img
+                loading="lazy"
+                src={imgLink}
+                key={i}
+                className="max-w-[40rem]"
+                alt="dog"
+              />
+            ))} */}
+          </div>
+        </section>
+      </div>
+    );
+  }
 }
 
 export default App;
