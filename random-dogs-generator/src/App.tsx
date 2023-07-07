@@ -25,23 +25,29 @@ function App() {
     setDogFullName(dividedNames);
   };
 
-  useEffect(() => {
-    (async () => {
-      if (onlyBreed !== "") {
-        const response = await getDogImageByBreedName(onlyBreed);
-        console.log(response.data);
-      }
-    })();
-  }, [onlyBreed]);
+  const gettingRandomImageByBreedName = async () => {
+    const response = await getDogImageByBreedName(onlyBreed);
+    return response.data.message;
+  };
 
-  useEffect(() => {
-    (async () => {
-      if (subBreed !== "") {
-        const response = await getSubBreedImageBreed(onlyBreed, subBreed);
-        console.log(response.data);
+  const gettingRandomImageByBreedSubBreed = async () => {
+    const response = await getSubBreedImageBreed(onlyBreed, subBreed);
+    return response.data.message;
+  };
+
+  const fetchingData = async () => {
+    if (dogFullName.length === 2) {
+      const subBreedData = await gettingRandomImageByBreedSubBreed();
+      if (subBreedData.length !== 0) {
+        setImage([subBreedData]);
       }
-    })();
-  }, [subBreed]);
+    } else {
+      const data = await gettingRandomImageByBreedName();
+      if (data.length !== 0) {
+        setImage([data]);
+      }
+    }
+  };
 
   // ------ For Dog's Breed for dropdown
   useEffect(() => {
@@ -78,20 +84,23 @@ function App() {
             ))}
           </select>
           <p>/images/random</p>
-          <button className="bg-blue-400 px-4 hover:bg-blue-500 py-2 rounded-lg">
+          <button
+            onClick={fetchingData}
+            className="bg-blue-400 px-4 hover:bg-blue-500 py-2 rounded-lg"
+          >
             Fetch!
           </button>
         </div>
         <div className=" min-h-[85vh] flex flex-col justify-center items-center">
-          {/* {_ALL_IMAGE[imageIndex].map((imgLink, i) => (
-              <img
-                loading="lazy"
-                src={imgLink}
-                key={i}
-                className="max-w-[30rem]"
-                alt="dog"
-              />
-            ))} */}
+          {image.map((imgLink, i) => (
+            <img
+              loading="lazy"
+              src={imgLink}
+              key={i}
+              className="max-w-[30rem]"
+              alt="dog"
+            />
+          ))}
         </div>
       </section>
     </div>
